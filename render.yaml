@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free                          # upgrade to 'starter' for always-on
 
-    buildCommand: pip install -r requirements.txt
+    buildCommand: bash build.sh
 
     startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 120 --bind 0.0.0.0:$PORT
 
