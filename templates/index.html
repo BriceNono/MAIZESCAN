@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaizeScan — Leaf Disease Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Background organic pattern -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-mark">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 2C14 2 6 7 6 15C6 19.4183 9.58172 23 14 23C18.4183 23 22 19.4183 22 15C22 7 14 2 14 2Z" fill="#5a8a3c"/>
+            <path d="M14 7C14 7 10 10.5 10 14C10 16.2091 11.7909 18 14 18C16.2091 18 18 16.2091 18 14C18 10.5 14 7 14 7Z" fill="#8bc34a"/>
+            <path d="M14 2L14 23" stroke="#3d6b28" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14 11L10.5 8" stroke="#3d6b28" stroke-width="1" stroke-linecap="round"/>
+            <path d="M14 14L17.5 11" stroke="#3d6b28" stroke-width="1" stroke-linecap="round"/>
+            <path d="M14 17L11 15" stroke="#3d6b28" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">MaizeScan</span>
+          <span class="logo-tagline">CNN Disease Detection</span>
+        </div>
+      </div>
+      <nav class="header-meta">
+        <span class="meta-badge">
+          <span class="badge-dot"></span>
+          VGG16 · 96.4% accuracy
+        </span>
+        <a href="/health" class="meta-link" target="_blank">API status</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Graduation Project — CNN Transfer Learning</p>
+        <h1 class="hero-title">
+          Diagnose maize<br>
+          <em>leaf diseases</em><br>
+          instantly
+        </h1>
+        <p class="hero-subtitle">
+          Upload a photograph of any maize leaf. The VGG16-powered model detects
+          Common Rust, Gray Leaf Spot, Northern Leaf Blight, and Healthy
+          leaves in under a second — with full confidence scores and treatment recommendations.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-val">96.4%</span>
+            <span class="stat-lbl">Accuracy</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-val">4</span>
+            <span class="stat-lbl">Disease classes</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-val">12,800</span>
+            <span class="stat-lbl">Training images</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-val">&lt; 1s</span>
+            <span class="stat-lbl">Inference time</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-classes">
+        <p class="classes-label">Detects these conditions</p>
+        <div class="class-pills">
+          <div class="class-pill pill-rust">
+            <span class="pill-dot"></span>Common Rust
+          </div>
+          <div class="class-pill pill-spot">
+            <span class="pill-dot"></span>Gray Leaf Spot
+          </div>
+          <div class="class-pill pill-blight">
+            <span class="pill-dot"></span>Northern Blight
+          </div>
+          <div class="class-pill pill-healthy">
+            <span class="pill-dot"></span>Healthy
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ MAIN TOOL ═══════════ -->
+  <main class="tool-section">
+    <div class="tool-inner">
+
+      <!-- Upload card -->
+      <div class="upload-card" id="uploadCard">
+        <div class="upload-zone" id="dropZone">
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" hidden>
+
+          <div class="upload-idle" id="uploadIdle">
+            <div class="upload-icon-ring">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M16 4C16 4 7 9.5 7 18C7 22.9706 11.0294 27 16 27C20.9706 27 25 22.9706 25 18C25 9.5 16 4 16 4Z" stroke="#5a8a3c" stroke-width="1.5" fill="none"/>
+                <path d="M16 4V27" stroke="#5a8a3c" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M16 13L12 10" stroke="#8bc34a" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M16 16L20 13" stroke="#8bc34a" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M16 19.5L12.5 17.5" stroke="#8bc34a" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="upload-main">Drop a maize leaf image here</p>
+            <p class="upload-sub">or <button class="upload-browse" onclick="document.getElementById('fileInput').click()">browse your files</button></p>
+            <p class="upload-formats">Supports JPG · PNG · WEBP · Max 16 MB</p>
+          </div>
+
+          <div class="upload-preview" id="uploadPreview" style="display:none">
+            <img id="previewImg" src="" alt="Leaf preview">
+            <div class="preview-overlay">
+              <button class="btn-change" onclick="resetUpload()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M1 7H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Change image
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-analyze" id="analyzeBtn" disabled onclick="analyze()">
+          <span class="btn-analyze-text">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 9L8.5 11.5L13 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Analyse leaf
+          </span>
+          <span class="btn-analyze-loading" style="display:none">
+            <span class="spinner-sm"></span>
+            Running CNN model…
+          </span>
+        </button>
+
+        <div class="demo-notice" id="demoNotice" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#b8860b" stroke-width="1.2"/><path d="M7 5V7.5" stroke="#b8860b" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="9.5" r="0.75" fill="#b8860b"/></svg>
+          Running in demo mode — place your trained model at <code>model/vgg16_maize_best.h5</code>
+        </div>
+      </div>
+
+      <!-- Result card -->
+      <div class="result-card" id="resultCard">
+
+        <!-- Empty state -->
+        <div class="result-empty" id="resultEmpty">
+          <div class="empty-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="20" stroke="#c8d8b8" stroke-width="1.5"/>
+              <path d="M24 14C24 14 17 18.5 17 24.5C17 28.1421 20.134 31 24 31C27.866 31 31 28.1421 31 24.5C31 18.5 24 14 24 14Z" stroke="#c8d8b8" stroke-width="1.5" fill="none"/>
+              <path d="M24 14V31" stroke="#c8d8b8" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="empty-title">No leaf analysed yet</p>
+          <p class="empty-sub">Upload a maize leaf image and click "Analyse leaf" to get an instant CNN diagnosis.</p>
+        </div>
+
+        <!-- Processing state -->
+        <div class="result-processing" id="resultProcessing" style="display:none">
+          <div class="processing-steps" id="processingSteps"></div>
+        </div>
+
+        <!-- Result output -->
+        <div class="result-output" id="resultOutput" style="display:none">
+
+          <div class="result-header" id="resultHeader">
+            <div class="result-leaf-preview">
+              <img id="resultLeafImg" src="" alt="Analysed leaf">
+            </div>
+            <div class="result-verdict">
+              <div class="verdict-badge" id="verdictBadge"></div>
+              <h2 class="verdict-disease" id="verdictDisease"></h2>
+              <p class="verdict-scientific" id="verdictScientific"></p>
+              <div class="verdict-meta">
+                <div class="meta-item">
+                  <span class="meta-key">Severity</span>
+                  <span class="meta-val" id="verdictSeverity"></span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-key">Spread risk</span>
+                  <span class="meta-val" id="verdictSpread"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="result-description" id="resultDescription"></p>
+
+          <!-- Confidence bars -->
+          <div class="confidence-section">
+            <p class="section-label">Model confidence scores</p>
+            <div class="confidence-bars" id="confidenceBars"></div>
+          </div>
+
+          <!-- Treatment actions -->
+          <div class="actions-section">
+            <p class="section-label">Recommended actions</p>
+            <ol class="action-list" id="actionList"></ol>
+          </div>
+
+          <!-- Prevention -->
+          <div class="prevention-section">
+            <p class="section-label">Prevention</p>
+            <p class="prevention-text" id="preventionText"></p>
+          </div>
+
+          <button class="btn-reset" onclick="resetAll()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7C2 4.23858 4.23858 2 7 2C8.65685 2 10.1174 2.79086 11.05 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M12 7C12 9.76142 9.76142 12 7 12C5.34315 12 3.8826 11.2091 2.95 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M11 1.5V4.5H8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 9.5V12.5H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Analyse another leaf
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══════════ HOW IT WORKS ═══════════ -->
+  <section class="how-section">
+    <div class="how-inner">
+      <h2 class="how-title">How the model works</h2>
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="step-num">01</div>
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.2"/></svg>
+          </div>
+          <h3 class="step-title">Image input</h3>
+          <p class="step-desc">Leaf photo resized to 224×224 px, pixel values normalised to [0,1]</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">02</div>
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 8H22M2 15H22M8 2V22M15 2V22" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+          <h3 class="step-title">VGG16 feature extraction</h3>
+          <p class="step-desc">13 convolutional layers in 5 blocks extract spatial disease features from the leaf texture</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">03</div>
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.2"/><circle cx="4" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="20" cy="7" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="4" cy="17" r="2" stroke="currentColor" stroke-width="1.2"/><circle cx="20" cy="17" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M6 7L9.5 10.5M14.5 10.5L18 7M6 17L9.5 13.5M14.5 13.5L18 17" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+          <h3 class="step-title">Dense classification</h3>
+          <p class="step-desc">512→256 neuron layers with BatchNorm and Dropout map features to disease probabilities</p>
+        </div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step">
+          <div class="step-num">04</div>
+          <div class="step-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 12H2M12 2C12 2 6 6 6 12C6 18 12 22 12 22" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M12 2C12 2 18 6 18 12C18 18 12 22 12 22" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="step-title">Softmax output</h3>
+          <p class="step-desc">4-neuron softmax layer outputs disease probability distribution summing to 100%</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">MaizeScan</span>
+        <span class="footer-sep">·</span>
+        <span class="footer-desc">Graduation Project — CNN Disease Detection</span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-note">Built with TensorFlow · Flask · Deployed on Render</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: maizescan
+    runtime: python
+    plan: free                          # upgrade to 'starter' for always-on
+
+    buildCommand: pip install -r requirements.txt
+
+    startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 120 --bind 0.0.0.0:$PORT
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: MODEL_PATH
+        value: model/vgg16_maize_best.h5  # path inside your repo
+      - key: FLASK_ENV
+        value: production
+
+    # Disk for storing the model file (Render free tier: no persistent disk)
+    # Uncomment if you upgrade to a paid plan:
+    # disk:
+    #   name: model-storage
+    #   mountPath: /opt/render/project/src/model
+    #   sizeGB: 1
+
+    healthCheckPath: /health
