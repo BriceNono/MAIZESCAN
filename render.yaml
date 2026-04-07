@@ -4,11 +4,14 @@ services:
     runtime: python
     plan: free                          # upgrade to 'starter' for always-on
 
-    buildCommand: python3.10 -m pip install --upgrade pip
-                  python3.10 -m pip install -r requirements.txt
+    buildCommand: apt-get update
+      apt-get install -y python3.10 python3.10-venv python3.10-dev
+      python3.10 -m ensurepip
+      python3.10 -m pip install --upgrade pip setuptools wheel
+      python3.10 -m pip install -r requirements.txt
     
 
-    startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 120 --bind 0.0.0.0:$PORT
+    startCommand: python 3.10 -m gunicorn app:app --workers 1 --threads 2 --timeout 120 --bind 0.0.0.0:$PORT
 
     envVars:
       - key: PYTHON_VERSION
